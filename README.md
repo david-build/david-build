@@ -1,14 +1,12 @@
-# 🔥 GitHub Profile Description
-
 ## About Me
 
 I'm a full-stack engineer, system architect, and technical lead with over 20 years of hands-on experience in web technologies.
 
-I started coding professionally in 2004, long before modern frameworks existed. From Adobe Flash & ActionScript to modern high-performance web systems, I’ve built products across multiple technology generations — adapting, evolving, and staying ahead of the curve.
+I started coding professionally in 2004, long before modern frameworks existed. From Adobe Flash & ActionScript to modern high-performance web systems, I’ve built products across multiple technology generations – adapting, evolving, and staying ahead of the curve.
 
-My core strength lies in backend architecture and scalable web systems, but I operate confidently across the entire development lifecycle — from UX design and product thinking to DevOps decisions and production deployment.
+My core strength lies in backend architecture and scalable web systems, but I operate confidently across the entire development lifecycle – from UX design and product thinking to DevOps decisions and production deployment.
 
-I don’t just write code — I design systems that work.
+I don’t just write code – I design systems that work.
 
 ---
 
@@ -23,40 +21,53 @@ I don’t just write code — I design systems that work.
 
 ---
 
-## Technical Stack
+# 💻 Technical Stack
 
-### Backend & Core
+## Core Engineering
 
-* **PHP 8+** — Expert (10/10)
-* **Node.js** — Expert (10/10)
-* **JavaScript** — Expert (10/10)
-* **TypeScript** — Advanced (8/10)
-* **ExpressJS**
-* **RESTful API architecture**
-* **Arduino (C/C++ based firmware development)** — Advanced (8/10)
-
-### Frontend
-
-* **HTML5 / CSS3** — Expert (10/10)
-* Responsive Web Architecture
-* Performance-optimized UI
-
-### Additional
-
-* **Python** — Working knowledge (4/10, currently expanding)
+| Area     | Technology         | Level | Notes                              |
+| -------- | ------------------ | ----- | ---------------------------------- |
+| Backend  | PHP 8+             | ⭐⭐⭐⭐⭐ | 20+ years production experience    |
+| Backend  | Node.js            | ⭐⭐⭐⭐⭐ | High-load systems & APIs           |
+| Backend  | ExpressJS          | ⭐⭐⭐⭐  | RESTful services & architecture    |
+| API      | RESTful API Design | ⭐⭐⭐⭐⭐ | Scalable, secure, production-grade |
+| Language | JavaScript         | ⭐⭐⭐⭐⭐ | Deep ecosystem knowledge           |
+| Language | TypeScript         | ⭐⭐⭐⭐  | Strong typing & architecture       |
+| Frontend | HTML5 / CSS3       | ⭐⭐⭐⭐⭐ | Performance-focused UI             |
 
 ---
 
-## Design & Product
+## Systems & Embedded
+
+| Area     | Technology      | Level | Notes                          |
+| -------- | --------------- | ----- | ------------------------------ |
+| Embedded | Arduino (C/C++) | ⭐⭐⭐⭐  | Hardware-level interaction     |
+| Language | Python          | ⭐⭐    | Expanding into automation / AI |
+
+---
+
+## Architecture & Product
+
+| Area          | Skill                          | Expertise                    |
+| ------------- | ------------------------------ | ---------------------------- |
+| System Design | Backend architecture           | Scalable & high-load systems |
+| Product       | Full-cycle development         | From idea to deployment      |
+| Security      | API & crypto integrations      | Production-ready             |
+| DevOps        | Deployment & server management | Production infrastructure    |
+
+---
+
+## Design & UX
 
 Beyond engineering, I actively design digital products:
 
-* UI/UX design
-* Figma prototyping
-* Web design systems
-* Mobile interface design
-* Telegram Mini App (TMA) design
-* Product structure & usability architecture
+| Area       | Tool / Skill                   | Level |
+| ---------- | ------------------------------ | ----- |
+| UI/UX      | Product usability design       | ⭐⭐⭐⭐⭐ |
+| Design     | Figma                          | ⭐⭐⭐⭐  |
+| Web Design | Design systems                 | ⭐⭐⭐⭐⭐ |
+| Mobile     | Mobile interface design        | ⭐⭐⭐⭐  |
+| Telegram   | Telegram Mini App (TMA) design | ⭐⭐⭐⭐⭐ |
 
 I believe engineering without design awareness is incomplete.
 
@@ -108,7 +119,7 @@ Full-Stack Developer & UI/UX Designer
 
 ## Achievements
 
-🏆 Two-time 1st Place Winner — Yandex Alice Skill Development Competition (2019)
+🏆 Two-time 1st Place Winner – Yandex Alice Skill Development Competition (2019)
 
 * “Guess the Dinosaur”
 * “Colors Mixer”
