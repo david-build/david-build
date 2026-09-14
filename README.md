@@ -103,21 +103,21 @@ Lately I write native apps for macOS and iPhone: SwiftUI + AppKit, no Electron, 
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/david-build/david-build/output/github-contribution-grid-snake-dark.svg">
-  <img src="https://raw.githubusercontent.com/david-build/david-build/output/github-contribution-grid-snake.svg" alt="Contribution snake" width="100%">
+  <img src="https://raw.githubusercontent.com/david-build/david-build/output/github-contribution-grid-snake.svg" alt="Contribution snake" width="880">
 </picture>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=david-build&theme=github_dark">
-  <img src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=david-build&theme=github" alt="Profile details" width="700">
+  <img src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=david-build&theme=github" alt="Profile details" width="880">
 </picture>
 <br>
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=david-build&theme=github_dark">
-  <img src="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=david-build&theme=github" alt="Stats" width="348">
+  <img src="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=david-build&theme=github" alt="Stats" width="438">
 </picture>
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=david-build&theme=github_dark&utcOffset=3">
-  <img src="https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=david-build&theme=github&utcOffset=3" alt="Productive time" width="348">
+  <img src="https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=david-build&theme=github&utcOffset=3" alt="Productive time" width="438">
 </picture>
 
 <sub>Most of my commits land in private repositories, so the public graph is the tip of the iceberg.</sub>
