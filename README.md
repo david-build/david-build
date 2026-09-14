@@ -106,14 +106,14 @@ Lately I write native apps for macOS and iPhone: SwiftUI + AppKit, no Electron, 
   <img src="https://raw.githubusercontent.com/david-build/david-build/output/github-contribution-grid-snake.svg" alt="Contribution snake" width="98%">
 </picture>
 
-<br><img src="assets/gap.png" alt="" width="1" height="28"><br>
+<br><br>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=david-build&theme=github_dark">
   <img src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=david-build&theme=github" alt="Profile details" width="98%">
 </picture>
 
-<br><img src="assets/gap.png" alt="" width="1" height="28"><br>
+<br><br>
 
 <!-- the three inline images share one line on purpose: any whitespace between them would widen the row and wrap it -->
 <picture><source media="(prefers-color-scheme: dark)" srcset="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=david-build&theme=github_dark"><img src="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=david-build&theme=github" alt="Stats" width="48%"></picture><img src="assets/spacer.png" alt="" width="2%" height="1"><picture><source media="(prefers-color-scheme: dark)" srcset="https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=david-build&theme=github_dark&utcOffset=3"><img src="https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=david-build&theme=github&utcOffset=3" alt="Productive time" width="48%"></picture>
