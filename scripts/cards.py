@@ -109,6 +109,8 @@ def load(user, token):
 	# "when do you work" chart is about anyway
 	hours = [0] * 24
 	seen = 0
+	repos = set()
+	private = 0
 	for page in range(1, 11):
 		try:
 			res = fetch(API + "/search/commits?q=author:%s&sort=author-date&order=desc&per_page=100&page=%d" % (user, page), token)
@@ -116,6 +118,8 @@ def load(user, token):
 			break
 		items = res.get("items", [])
 		for it in items:
+			repos.add(it["repository"]["full_name"])
+			private += 1 if it["repository"].get("private") else 0
 			stamp = it["commit"]["author"]["date"]
 			# the author date carries the committer's own offset, so the hour is already local
 			try:
@@ -137,6 +141,9 @@ def load(user, token):
 		"followers": u["followers"]["totalCount"],
 		"hours": hours,
 		"hours_n": seen,
+		# what the token could see, printed by the run so a missing private scope shows in the log
+		"hours_repos": len(repos),
+		"hours_private": private,
 	}
 
 
