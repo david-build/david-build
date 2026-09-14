@@ -15,13 +15,17 @@ import base64
 import datetime as dt
 import json
 import os
+import random
 import re
 import sys
 import urllib.request
 
 API = "https://api.github.com"
 HERE = os.path.dirname(os.path.abspath(__file__))
-PAD = 32
+PAD = 27
+
+# what surfaces between the dots, now and then: small artefacts of a developer's day
+EGGS = ["</>", "{ }", ";", "=>", "#!", "λ", "0x9B", ":wq", "git push", "404", "sudo", "null", "&&", "//", "~/", "TODO", "42", "rm -rf", "⌘", "λx.x", "0b1010", "npm i", "SELECT *", "<?php", "swift build"]
 
 # brand palette: Dark Void, Neon Purple, Links, Tealish Green, Liquid Lava, the greys and Snow
 BRAND = {
@@ -31,14 +35,16 @@ BRAND = {
 
 THEMES = {
 	"dark": {
-		"bg": BRAND["void"], "border": "rgba(255,255,255,.08)",
+		"bg": BRAND["void"],
 		"text": BRAND["snow"], "muted": BRAND["dusty"], "faint": BRAND["cute"],
-		"dot": "#ffffff", "dot_op": ".045", "grid": "rgba(255,255,255,.06)", "glow_op": ".16",
+		"dot": "#ffffff", "dot_op": ".045", "egg_op": ".13", "grid": "rgba(255,255,255,.06)", "glow_op": ".24",
+		"edge": "#ffffff", "edge_op": ".16",
 	},
 	"light": {
-		"bg": BRAND["snow"], "border": "#dddde3",
+		"bg": BRAND["snow"],
 		"text": BRAND["void"], "muted": BRAND["cute"], "faint": BRAND["dusty"],
-		"dot": BRAND["void"], "dot_op": ".05", "grid": "rgba(21,20,25,.07)", "glow_op": ".07",
+		"dot": BRAND["void"], "dot_op": ".05", "egg_op": ".14", "grid": "rgba(21,20,25,.07)", "glow_op": ".11",
+		"edge": BRAND["void"], "edge_op": ".14",
 	},
 }
 
@@ -168,26 +174,39 @@ def open_svg(w, h, label):
 	return '<svg xmlns="http://www.w3.org/2000/svg" width="%d" height="%d" viewBox="0 0 %d %d" role="img" aria-label="%s">%s' % (w, h, w, h, label, font_face())
 
 
-def shell(t, w, h, key):
-	"""Card plate: rounded, an even halftone of faint dots, a dim purple glow rising from the foot."""
+def eggs(t, w, h, key):
+	"""A few developer artefacts sit on the dot grid instead of dots; the seed keeps them still between daily renders."""
+	rng = random.Random(key)
+	out = ""
+	for _ in range(max(4, (w * h) // 26000)):
+		x = rng.randrange(2, w // 10 - 2) * 10 + 5
+		y = rng.randrange(2, h // 10 - 2) * 10 + 5
+		out += '<text x="%d" y="%d" text-anchor="middle" dominant-baseline="middle" font-family="%s" font-size="10" fill="%s" opacity="%s">%s</text>' % (x, y, FONT, t["dot"], t["egg_op"], rng.choice(EGGS).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
+	return out
+
+
+def shell(t, w, h, key, glow):
+	"""Card plate: rounded, an even halftone of faint dots with a few easter eggs, a glow of the card's own colour rising from the foot, a gradient edge."""
 	return """<defs>
 	<clipPath id="clip-%(k)s"><rect width="%(w)d" height="%(h)d" rx="18"/></clipPath>
 	<pattern id="dots-%(k)s" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="5" cy="5" r="1" fill="%(dot)s"/></pattern>
-	<radialGradient id="glow-%(k)s" cx=".5" cy="1.2" r=".8"><stop offset="0" stop-color="%(purple)s" stop-opacity="%(glow_op)s"/><stop offset="1" stop-color="%(purple)s" stop-opacity="0"/></radialGradient>
+	<radialGradient id="glow-%(k)s" cx=".5" cy="1.2" r=".8"><stop offset="0" stop-color="%(glow)s" stop-opacity="%(glow_op)s"/><stop offset="1" stop-color="%(glow)s" stop-opacity="0"/></radialGradient>
+	<linearGradient id="edge-%(k)s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="%(edge)s" stop-opacity="%(edge_op)s"/><stop offset="1" stop-color="%(glow)s" stop-opacity=".25"/></linearGradient>
 	<linearGradient id="line-%(k)s" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="%(links)s"/><stop offset="1" stop-color="%(purple)s"/></linearGradient>
 	<linearGradient id="area-%(k)s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="%(purple)s" stop-opacity=".4"/><stop offset="1" stop-color="%(purple)s" stop-opacity="0"/></linearGradient>
-	<linearGradient id="spark-%(k)s" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="%(lava)s" stop-opacity=".6"/><stop offset="1" stop-color="%(lava)s"/></linearGradient>
-	<linearGradient id="sparkarea-%(k)s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="%(lava)s" stop-opacity=".35"/><stop offset="1" stop-color="%(lava)s" stop-opacity="0"/></linearGradient>
-	<linearGradient id="bar-%(k)s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="%(green)s"/><stop offset="1" stop-color="%(green)s" stop-opacity=".3"/></linearGradient>
+	<linearGradient id="spark-%(k)s" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3b82f6"/><stop offset=".55" stop-color="#22c55e"/><stop offset="1" stop-color="#a3e635"/></linearGradient>
+	<linearGradient id="sparkarea-%(k)s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4ade80" stop-opacity=".4"/><stop offset="1" stop-color="#4ade80" stop-opacity="0"/></linearGradient>
+	<linearGradient id="bar-%(k)s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="%(green)s"/><stop offset=".5" stop-color="%(green)s" stop-opacity=".55"/><stop offset="1" stop-color="%(green)s" stop-opacity=".06"/></linearGradient>
 	<filter id="soft-%(k)s" x="-50%%" y="-50%%" width="200%%" height="200%%"><feGaussianBlur stdDeviation="6"/></filter>
 </defs>
 <g clip-path="url(#clip-%(k)s)">
 	<rect width="%(w)d" height="%(h)d" fill="%(bg)s"/>
 	<rect width="%(w)d" height="%(h)d" fill="url(#dots-%(k)s)" opacity="%(dot_op)s"/>
+	%(eggs)s
 	<rect width="%(w)d" height="%(h)d" fill="url(#glow-%(k)s)"/>
 </g>
-<rect x=".5" y=".5" width="%(w)d" height="%(h)d" rx="18" fill="none" stroke="%(border)s"/>
-""" % dict(t, **BRAND, k=key, w=w - 1, h=h - 1)
+<rect x=".5" y=".5" width="%(w)d" height="%(h)d" rx="18" fill="none" stroke="url(#edge-%(k)s)"/>
+""" % dict(t, **BRAND, k=key, w=w - 1, h=h - 1, glow=glow, eggs=eggs(t, w, h, key))
 
 
 def text(x, y, s, size, color, weight=400, anchor="start"):
@@ -212,7 +231,7 @@ def card_activity(t, key, d):
 	pts = [(left + i * (right - left) / (n - 1), bottom - v / peak * (bottom - top)) for i, v in enumerate(series)]
 
 	s = open_svg(w, h, "Contributions in the last year")
-	s += shell(t, w, h, key)
+	s += shell(t, w, h, key, BRAND["purple"])
 	s += title(t, PAD, PAD, "Activity", "contributions in the last year, all repositories")
 	s += text(right, PAD + 24, fmt(d["total"]), 30, t["text"], 700, "end")
 
@@ -250,7 +269,7 @@ def card_activity(t, key, d):
 def card_totals(t, key, d):
 	w, h = 432, 250
 	s = open_svg(w, h, "Totals")
-	s += shell(t, w, h, key)
+	s += shell(t, w, h, key, BRAND["lava"])
 	s += title(t, PAD, PAD, "Totals", "last year, public and private")
 
 	cells = [
@@ -281,7 +300,7 @@ def card_totals(t, key, d):
 def card_hours(t, key, d):
 	w, h = 432, 250
 	s = open_svg(w, h, "Commits by hour")
-	s += shell(t, w, h, key)
+	s += shell(t, w, h, key, BRAND["green"])
 	s += title(t, PAD, PAD, "Commits by hour", "local time of the last %s commits" % fmt(d["hours_n"]))
 
 	hours = d["hours"]
@@ -295,8 +314,6 @@ def card_hours(t, key, d):
 		x = left + i * slot + 2
 		bh = max(2, v / peak * (bottom - top))
 		y = bottom - bh
-		if i == best:
-			s += '<rect x="%.1f" y="%.1f" width="%.1f" height="%.1f" rx="3" fill="%s" opacity=".55" filter="url(#soft-%s)"/>' % (x, y, bw, bh, BRAND["green"], key)
 		s += '<rect x="%.1f" y="%.1f" width="%.1f" height="%.1f" rx="3" fill="url(#bar-%s)"/>' % (x, y, bw, bh, key)
 
 	# the busiest hour, called out above its bar
