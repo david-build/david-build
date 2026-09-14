@@ -21,14 +21,16 @@ jobs:
         uses: Platane/snk/svg-only@v3
         with:
           github_user_name: ${{ github.repository_owner }}
+          # brand purple snake, dots climb from the empty grey to the link lavender
           outputs: |
-            dist/github-contribution-grid-snake.svg?palette=github-light
-            dist/github-contribution-grid-snake-dark.svg?palette=github-dark
+            dist/github-contribution-grid-snake.svg?palette=github-light&color_snake=#9B30FF&color_dots=#ebebef,#e3d6ff,#c7abff,#a982ff,#8C78F2
+            dist/github-contribution-grid-snake-dark.svg?palette=github-dark&color_snake=#9B30FF&color_dots=#26242B,#3b2f6b,#5a44a6,#7a5fd9,#8C78F2
 
       - name: Draw the stats cards
         # PROFILE_TOKEN (a read-only fine-grained PAT) lets the cards see private repos; the default token sees public ones
         env:
           GH_TOKEN: ${{ secrets.PROFILE_TOKEN || secrets.GITHUB_TOKEN }}
+        # also rounds the progress bar of the snake files already in dist
         run: python3 scripts/cards.py ${{ github.repository_owner }} dist
 
       - name: Publish to the output branch

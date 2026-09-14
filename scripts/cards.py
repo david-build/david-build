@@ -6,36 +6,50 @@ Three cards, each in a dark and a light variant:
   totals    - the headline numbers with a weekly sparkline
   hours     - commits by local hour of day, gradient bars
 
+The snake SVGs already in the output folder get their progress bar rounded.
+
 Usage: GH_TOKEN=... cards.py <user> <out_dir>
 """
 
+import base64
 import datetime as dt
 import json
-import math
 import os
+import re
 import sys
 import urllib.request
 
 API = "https://api.github.com"
+HERE = os.path.dirname(os.path.abspath(__file__))
+PAD = 32
 
-# one palette per theme; the accent gradients are shared so the cards read as a set
+# brand palette: Dark Void, Neon Purple, Links, Tealish Green, Liquid Lava, the greys and Snow
+BRAND = {
+	"void": "#151419", "purple": "#9b30ff", "links": "#8c78f2", "green": "#5afa77", "lava": "#f56f10",
+	"glucon": "#26242b", "anchor": "#2f2e36", "cute": "#61606d", "dusty": "#878787", "snow": "#fbfbfb",
+}
+
 THEMES = {
 	"dark": {
-		"bg": "#0b0d11", "bg2": "#0e1117", "border": "rgba(255,255,255,.09)",
-		"text": "#f2f4f7", "muted": "#8b93a1", "faint": "#4a5160",
-		"dot": "#ffffff", "dot_op": ".10", "grid": "rgba(255,255,255,.07)",
-		"glow": "#6d4cff", "glow_op": ".22", "bar_dim": "#1f3d2a", "track": "rgba(255,255,255,.05)",
+		"bg": BRAND["void"], "border": "rgba(255,255,255,.08)",
+		"text": BRAND["snow"], "muted": BRAND["dusty"], "faint": BRAND["cute"],
+		"dot": "#ffffff", "dot_op": ".045", "grid": "rgba(255,255,255,.06)", "glow_op": ".16",
 	},
 	"light": {
-		"bg": "#ffffff", "bg2": "#fbfcfd", "border": "#d0d7de",
-		"text": "#1f2328", "muted": "#59636e", "faint": "#a8b0ba",
-		"dot": "#1f2328", "dot_op": ".08", "grid": "rgba(31,35,40,.08)",
-		"glow": "#6d4cff", "glow_op": ".10", "bar_dim": "#cfe9d8", "track": "rgba(31,35,40,.05)",
+		"bg": BRAND["snow"], "border": "#dddde3",
+		"text": BRAND["void"], "muted": BRAND["cute"], "faint": BRAND["dusty"],
+		"dot": BRAND["void"], "dot_op": ".05", "grid": "rgba(21,20,25,.07)", "glow_op": ".07",
 	},
 }
 
-SANS = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif"
-MONO = "'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace"
+FONT = "Onest, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif"
+
+
+def font_face():
+	"""The brand face travels inside the SVG: an image on GitHub can load no external font."""
+	with open(os.path.join(HERE, "..", "assets", "fonts", "onest.woff2"), "rb") as f:
+		data = base64.b64encode(f.read()).decode()
+	return "<style>@font-face{font-family:Onest;font-weight:100 900;src:url(data:font/woff2;base64,%s) format('woff2')}</style>" % data
 
 
 def fetch(url, token, data=None):
@@ -60,10 +74,8 @@ def graphql(token, query, variables):
 QUERY = """
 query($login: String!) {
   user(login: $login) {
-    createdAt
     followers { totalCount }
     repositories(ownerAffiliations: OWNER, isFork: false, first: 100) {
-      totalCount
       nodes { stargazerCount }
     }
     contributionsCollection {
@@ -117,7 +129,6 @@ def load(user, token):
 		"repos_contrib": cc["totalRepositoriesWithContributedCommits"],
 		"stars": sum(n["stargazerCount"] for n in u["repositories"]["nodes"]),
 		"followers": u["followers"]["totalCount"],
-		"years": (dt.datetime.now(dt.timezone.utc) - dt.datetime.fromisoformat(u["createdAt"].replace("Z", "+00:00"))).days // 365,
 		"hours": hours,
 		"hours_n": seen,
 	}
@@ -153,33 +164,39 @@ def curve(points):
 	return d
 
 
+def open_svg(w, h, label):
+	return '<svg xmlns="http://www.w3.org/2000/svg" width="%d" height="%d" viewBox="0 0 %d %d" role="img" aria-label="%s">%s' % (w, h, w, h, label, font_face())
+
+
 def shell(t, w, h, key):
-	"""Card background: rounded plate, halftone dots that fade in toward the bottom, a dim glow."""
+	"""Card plate: rounded, an even halftone of faint dots, a dim purple glow rising from the foot."""
 	return """<defs>
 	<clipPath id="clip-%(k)s"><rect width="%(w)d" height="%(h)d" rx="18"/></clipPath>
-	<pattern id="dots-%(k)s" width="9" height="9" patternUnits="userSpaceOnUse"><circle cx="4.5" cy="4.5" r="1" fill="%(dot)s"/></pattern>
-	<linearGradient id="fade-%(k)s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".25"/><stop offset="1" stop-color="#fff" stop-opacity="1"/></linearGradient>
-	<mask id="mask-%(k)s"><rect width="%(w)d" height="%(h)d" fill="url(#fade-%(k)s)"/></mask>
-	<radialGradient id="glow-%(k)s" cx=".5" cy="1.15" r=".75"><stop offset="0" stop-color="%(glow)s" stop-opacity="%(glow_op)s"/><stop offset="1" stop-color="%(glow)s" stop-opacity="0"/></radialGradient>
-	<linearGradient id="line-%(k)s" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3b82f6"/><stop offset=".55" stop-color="#22c55e"/><stop offset="1" stop-color="#a3e635"/></linearGradient>
-	<linearGradient id="area-%(k)s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4ade80" stop-opacity=".45"/><stop offset="1" stop-color="#4ade80" stop-opacity="0"/></linearGradient>
-	<linearGradient id="bar-%(k)s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#86efac"/><stop offset=".45" stop-color="#22c55e"/><stop offset="1" stop-color="#15803d" stop-opacity=".55"/></linearGradient>
+	<pattern id="dots-%(k)s" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="5" cy="5" r="1" fill="%(dot)s"/></pattern>
+	<radialGradient id="glow-%(k)s" cx=".5" cy="1.2" r=".8"><stop offset="0" stop-color="%(purple)s" stop-opacity="%(glow_op)s"/><stop offset="1" stop-color="%(purple)s" stop-opacity="0"/></radialGradient>
+	<linearGradient id="line-%(k)s" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="%(links)s"/><stop offset="1" stop-color="%(purple)s"/></linearGradient>
+	<linearGradient id="area-%(k)s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="%(purple)s" stop-opacity=".4"/><stop offset="1" stop-color="%(purple)s" stop-opacity="0"/></linearGradient>
+	<linearGradient id="spark-%(k)s" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="%(lava)s" stop-opacity=".6"/><stop offset="1" stop-color="%(lava)s"/></linearGradient>
+	<linearGradient id="sparkarea-%(k)s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="%(lava)s" stop-opacity=".35"/><stop offset="1" stop-color="%(lava)s" stop-opacity="0"/></linearGradient>
+	<linearGradient id="bar-%(k)s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="%(green)s"/><stop offset="1" stop-color="%(green)s" stop-opacity=".3"/></linearGradient>
 	<filter id="soft-%(k)s" x="-50%%" y="-50%%" width="200%%" height="200%%"><feGaussianBlur stdDeviation="6"/></filter>
 </defs>
 <g clip-path="url(#clip-%(k)s)">
 	<rect width="%(w)d" height="%(h)d" fill="%(bg)s"/>
-	<rect width="%(w)d" height="%(h)d" fill="url(#dots-%(k)s)" opacity="%(dot_op)s" mask="url(#mask-%(k)s)"/>
+	<rect width="%(w)d" height="%(h)d" fill="url(#dots-%(k)s)" opacity="%(dot_op)s"/>
 	<rect width="%(w)d" height="%(h)d" fill="url(#glow-%(k)s)"/>
 </g>
 <rect x=".5" y=".5" width="%(w)d" height="%(h)d" rx="18" fill="none" stroke="%(border)s"/>
-""" % dict(t, k=key, w=w - 1, h=h - 1)
+""" % dict(t, **BRAND, k=key, w=w - 1, h=h - 1)
 
 
-def title(t, x, y, text, sub=None):
-	out = '<text x="%d" y="%d" font-family="%s" font-size="19" font-weight="700" fill="%s">%s</text>' % (x, y, SANS, t["text"], text)
-	if sub:
-		out += '<text x="%d" y="%d" font-family="%s" font-size="12" fill="%s">%s</text>' % (x, y + 20, SANS, t["muted"], sub)
-	return out
+def text(x, y, s, size, color, weight=400, anchor="start"):
+	return '<text x="%.1f" y="%.1f" text-anchor="%s" font-family="%s" font-size="%d" font-weight="%d" fill="%s">%s</text>' % (x, y, anchor, FONT, size, weight, color, s)
+
+
+def title(t, x, y, head, sub):
+	# y is the top of the text block: a 19px title cap sits 15px below it, the subtitle 22px under that
+	return text(x, y + 15, head, 19, t["text"], 700) + text(x, y + 37, sub, 12, t["muted"])
 
 
 def card_activity(t, key, d):
@@ -188,47 +205,43 @@ def card_activity(t, key, d):
 	counts = [x["contributionCount"] for x in days]
 	# a three week mean, sampled every few days, turns the spiky daily series into the shape of the year
 	series = smooth(counts, 21)[::4]
-	left, right, top, bottom = 40, 40, 78, 214
+	left, right = PAD, w - PAD
+	top, bottom = PAD + 56, h - PAD - 22
 	peak = max(series) or 1
 	n = len(series)
-	pts = [(left + i * (w - left - right) / (n - 1), bottom - v / peak * (bottom - top)) for i, v in enumerate(series)]
+	pts = [(left + i * (right - left) / (n - 1), bottom - v / peak * (bottom - top)) for i, v in enumerate(series)]
 
-	s = '<svg xmlns="http://www.w3.org/2000/svg" width="%d" height="%d" viewBox="0 0 %d %d" role="img" aria-label="Contributions in the last year">' % (w, h, w, h)
+	s = open_svg(w, h, "Contributions in the last year")
 	s += shell(t, w, h, key)
-	s += title(t, left, 40, "Activity", "contributions in the last year, all repositories")
-
-	# headline number, monospace like a readout
-	s += '<text x="%d" y="46" text-anchor="end" font-family="%s" font-size="30" font-weight="700" fill="%s">%s</text>' % (w - right, MONO, t["text"], fmt(d["total"]))
+	s += title(t, PAD, PAD, "Activity", "contributions in the last year, all repositories")
+	s += text(right, PAD + 24, fmt(d["total"]), 30, t["text"], 700, "end")
 
 	# dotted grid, one line per quarter of the peak
 	for i in range(1, 4):
 		y = bottom - i * (bottom - top) / 4
-		s += '<line x1="%d" y1="%.1f" x2="%d" y2="%.1f" stroke="%s" stroke-dasharray="2 4"/>' % (left, y, w - right, y, t["grid"])
+		s += '<line x1="%d" y1="%.1f" x2="%d" y2="%.1f" stroke="%s" stroke-dasharray="2 4"/>' % (left, y, right, y, t["grid"])
 
 	path = curve(pts)
 	s += '<path d="%s L%.1f,%d L%d,%d Z" fill="url(#area-%s)"/>' % (path, pts[-1][0], bottom, left, bottom, key)
-	s += '<path d="%s" fill="none" stroke="url(#line-%s)" stroke-width="2.5" stroke-linejoin="round" opacity=".35" filter="url(#soft-%s)"/>' % (path, key, key)
+	s += '<path d="%s" fill="none" stroke="url(#line-%s)" stroke-width="2.5" stroke-linejoin="round" opacity=".4" filter="url(#soft-%s)"/>' % (path, key, key)
 	s += '<path d="%s" fill="none" stroke="url(#line-%s)" stroke-width="2.5" stroke-linejoin="round"/>' % (path, key)
 
 	# the peak day, called out
 	pi = max(range(n), key=lambda i: series[i])
 	px, py = pts[pi]
 	peak_day = max(days, key=lambda x: x["contributionCount"])
-	py -= 2
 	s += '<line x1="%.1f" y1="%.1f" x2="%.1f" y2="%d" stroke="%s" stroke-dasharray="2 3"/>' % (px, py, px, bottom, t["faint"])
-	s += '<circle cx="%.1f" cy="%.1f" r="4" fill="%s" stroke="#a3e635" stroke-width="2"/>' % (px, py, t["bg"])
+	s += '<circle cx="%.1f" cy="%.1f" r="4" fill="%s" stroke="%s" stroke-width="2"/>' % (px, py, t["bg"], BRAND["green"])
 	label = "%d on %s" % (peak_day["contributionCount"], dt.date.fromisoformat(peak_day["date"]).strftime("%-d %b"))
 	anchor = "end" if px > w / 2 else "start"
-	lx = px - 10 if anchor == "end" else px + 10
-	s += '<text x="%.1f" y="%.1f" text-anchor="%s" font-family="%s" font-size="12" fill="%s">%s</text>' % (lx, py - 8, anchor, MONO, t["muted"], label)
+	s += text(px - 10 if anchor == "end" else px + 10, py - 8, label, 12, t["muted"], 500, anchor)
 
-	# month ticks along the bottom
+	# month ticks along the foot
 	last = ""
 	for i, x in enumerate(days):
 		m = dt.date.fromisoformat(x["date"]).strftime("%b")
 		if m != last and i > 6:
-			tx = left + i * (w - left - right) / (len(days) - 1)
-			s += '<text x="%.1f" y="%d" font-family="%s" font-size="11" fill="%s">%s</text>' % (tx, bottom + 22, MONO, t["faint"], m)
+			s += text(left + i * (right - left) / (len(days) - 1), h - PAD, m, 11, t["faint"], 500, "middle")
 		last = m
 	s += "</svg>"
 	return s
@@ -236,63 +249,81 @@ def card_activity(t, key, d):
 
 def card_totals(t, key, d):
 	w, h = 432, 250
-	s = '<svg xmlns="http://www.w3.org/2000/svg" width="%d" height="%d" viewBox="0 0 %d %d" role="img" aria-label="Totals">' % (w, h, w, h)
+	s = open_svg(w, h, "Totals")
 	s += shell(t, w, h, key)
-	s += title(t, 32, 40, "Totals", "last year, public and private")
+	s += title(t, PAD, PAD, "Totals", "last year, public and private")
 
 	cells = [
 		("Commits", d["commits"]), ("Pull requests", d["prs"]), ("Issues", d["issues"]),
 		("Repos touched", d["repos_contrib"]), ("Stars", d["stars"]), ("Followers", d["followers"]),
 	]
+	col = (w - 2 * PAD) / 3
 	for i, (name, val) in enumerate(cells):
-		x = 32 + (i % 3) * 128
-		y = 112 + (i // 3) * 66
-		s += '<text x="%d" y="%d" font-family="%s" font-size="24" font-weight="700" fill="%s">%s</text>' % (x, y, MONO, t["text"], fmt(val))
-		s += '<text x="%d" y="%d" font-family="%s" font-size="11" fill="%s">%s</text>' % (x, y + 18, SANS, t["muted"], name)
+		x = PAD + (i % 3) * col
+		y = PAD + 76 + (i // 3) * 58
+		s += text(x, y, fmt(val), 24, t["text"], 700)
+		s += text(x, y + 17, name, 11, t["muted"])
 
 	# weekly sparkline along the foot of the card
 	weeks = [sum(x["contributionCount"] for x in d["days"][i:i + 7]) for i in range(0, len(d["days"]), 7)]
 	peak = max(weeks) or 1
-	left, right, top, bottom = 32, 32, 208, 232
+	left, right = PAD, w - PAD
+	top, bottom = h - PAD - 26, h - PAD
 	n = len(weeks)
-	pts = [(left + i * (w - left - right) / (n - 1), bottom - v / peak * (bottom - top)) for i, v in enumerate(weeks)]
+	pts = [(left + i * (right - left) / (n - 1), bottom - v / peak * (bottom - top)) for i, v in enumerate(weeks)]
 	path = curve(pts)
-	s += '<path d="%s L%.1f,%d L%d,%d Z" fill="url(#area-%s)"/>' % (path, pts[-1][0], bottom, left, bottom, key)
-	s += '<path d="%s" fill="none" stroke="url(#line-%s)" stroke-width="2" stroke-linejoin="round"/>' % (path, key)
+	s += '<path d="%s L%.1f,%d L%d,%d Z" fill="url(#sparkarea-%s)"/>' % (path, pts[-1][0], bottom, left, bottom, key)
+	s += '<path d="%s" fill="none" stroke="url(#spark-%s)" stroke-width="2" stroke-linejoin="round"/>' % (path, key)
 	s += "</svg>"
 	return s
 
 
 def card_hours(t, key, d):
 	w, h = 432, 250
-	s = '<svg xmlns="http://www.w3.org/2000/svg" width="%d" height="%d" viewBox="0 0 %d %d" role="img" aria-label="Commits by hour">' % (w, h, w, h)
+	s = open_svg(w, h, "Commits by hour")
 	s += shell(t, w, h, key)
-	s += title(t, 32, 40, "Commits by hour", "local time of the last %s commits" % fmt(d["hours_n"]))
+	s += title(t, PAD, PAD, "Commits by hour", "local time of the last %s commits" % fmt(d["hours_n"]))
 
 	hours = d["hours"]
 	peak = max(hours) or 1
-	left, right, top, bottom = 32, 32, 88, 200
-	slot = (w - left - right) / 24
-	bw = slot - 5
+	left, right = PAD, w - PAD
+	top, bottom = PAD + 70, h - PAD - 22
+	slot = (right - left) / 24
+	bw = slot - 4
 	best = hours.index(peak)
 	for i, v in enumerate(hours):
-		x = left + i * slot + 2.5
-		bh = max(3, v / peak * (bottom - top))
+		x = left + i * slot + 2
+		bh = max(2, v / peak * (bottom - top))
 		y = bottom - bh
-		s += '<rect x="%.1f" y="%d" width="%.1f" height="%d" rx="3" fill="%s"/>' % (x, top, bw, bottom - top, t["track"])
 		if i == best:
-			s += '<rect x="%.1f" y="%.1f" width="%.1f" height="%.1f" rx="3" fill="#4ade80" opacity=".6" filter="url(#soft-%s)"/>' % (x, y, bw, bh, key)
+			s += '<rect x="%.1f" y="%.1f" width="%.1f" height="%.1f" rx="3" fill="%s" opacity=".55" filter="url(#soft-%s)"/>' % (x, y, bw, bh, BRAND["green"], key)
 		s += '<rect x="%.1f" y="%.1f" width="%.1f" height="%.1f" rx="3" fill="url(#bar-%s)"/>' % (x, y, bw, bh, key)
 
 	# the busiest hour, called out above its bar
-	bx = left + best * slot + slot / 2
-	by = bottom - peak / peak * (bottom - top)
-	s += '<text x="%.1f" y="%.1f" text-anchor="middle" font-family="%s" font-size="11" fill="%s">%02d:00</text>' % (bx, by - 8, MONO, t["muted"], best)
-
+	s += text(left + best * slot + slot / 2, top - 8, "%02d:00" % best, 11, t["muted"], 500, "middle")
 	for hr in (0, 6, 12, 18, 23):
-		s += '<text x="%.1f" y="%d" text-anchor="middle" font-family="%s" font-size="11" fill="%s">%d</text>' % (left + hr * slot + slot / 2, bottom + 20, MONO, t["faint"], hr)
+		s += text(left + hr * slot + slot / 2, h - PAD, str(hr), 11, t["faint"], 500, "middle")
 	s += "</svg>"
 	return s
+
+
+def round_snake(path):
+	"""The snake's progress bar is a row of flat rects; clip the row to one rounded shape."""
+	with open(path, encoding="utf-8") as f:
+		svg = f.read()
+	rects = re.findall(r'<rect class="u u\d+"[^>]*/>', svg)
+	if not rects:
+		return
+	nums = [(float(re.search(r'x="([\d.]+)"', r).group(1)), float(re.search(r'width="([\d.]+)"', r).group(1)),
+	         float(re.search(r'y="([\d.]+)"', r).group(1)), float(re.search(r'height="([\d.]+)"', r).group(1))) for r in rects]
+	x0 = min(n[0] for n in nums)
+	x1 = max(n[0] + n[1] for n in nums)
+	y0, hh = nums[0][2], nums[0][3]
+	clip = '<clipPath id="stack"><rect x="%.1f" y="%.1f" width="%.1f" height="%.1f" rx="%.1f"/></clipPath>' % (x0, y0, x1 - x0, hh, hh / 2)
+	row = "".join(rects)
+	svg = svg.replace(row, '<defs>%s</defs><g clip-path="url(#stack)">%s</g>' % (clip, row), 1)
+	with open(path, "w", encoding="utf-8") as f:
+		f.write(svg)
 
 
 def main():
@@ -308,6 +339,9 @@ def main():
 		for name, fn in (("activity", card_activity), ("totals", card_totals), ("hours", card_hours)):
 			with open(os.path.join(out, "card-%s%s.svg" % (name, suffix)), "w", encoding="utf-8") as f:
 				f.write(fn(t, name + theme[0], d))
+	for name in os.listdir(out):
+		if name.startswith("github-contribution-grid-snake") and name.endswith(".svg"):
+			round_snake(os.path.join(out, name))
 	print("cards written to", out, json.dumps({k: v for k, v in d.items() if k != "days"}))
 
 
