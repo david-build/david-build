@@ -50,7 +50,7 @@ Lately I write native apps for macOS and iPhone: SwiftUI + AppKit, no Electron, 
 | --- | --- |
 | [**Belay**](https://github.com/PerfectoWeb/Belay) | Keeps your Mac awake while AI coding agents work, then lets it sleep. [Mac App Store](https://apps.apple.com/app/belay-awake-for-ai-agents/id6801207644) · [Homebrew](https://github.com/PerfectoWeb/homebrew-tap) · [site](https://perfectoweb.github.io/Belay/) |
 | [**Gibson**](https://github.com/PerfectoWeb/Gibson) | A macOS screen saver: the hacker-film dashboard, driven by real system telemetry |
-| **f64** | A pure RAW camera for iPhone with manual dials and zero AI. In development |
+| [**f/64**](https://apps.apple.com/app/f-64-raw-camera/id6794889919) | A pure RAW camera for iPhone: true Bayer DNG, fully manual dials, zero AI. [App Store](https://apps.apple.com/app/f-64-raw-camera/id6794889919) |
 
 ### 🔧 Hardware & embedded
 
@@ -106,10 +106,14 @@ Lately I write native apps for macOS and iPhone: SwiftUI + AppKit, no Electron, 
   <img src="https://raw.githubusercontent.com/david-build/david-build/output/github-contribution-grid-snake.svg" alt="Contribution snake" width="98%">
 </picture>
 
+<img src="assets/spacer.png" alt="" width="1" height="28">
+
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=david-build&theme=github_dark">
   <img src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=david-build&theme=github" alt="Profile details" width="98%">
 </picture>
+
+<img src="assets/spacer.png" alt="" width="1" height="28">
 
 <!-- the three inline images share one line on purpose: any whitespace between them would widen the row and wrap it -->
 <picture><source media="(prefers-color-scheme: dark)" srcset="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=david-build&theme=github_dark"><img src="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=david-build&theme=github" alt="Stats" width="48%"></picture><img src="assets/spacer.png" alt="" width="2%" height="1"><picture><source media="(prefers-color-scheme: dark)" srcset="https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=david-build&theme=github_dark&utcOffset=3"><img src="https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=david-build&theme=github&utcOffset=3" alt="Productive time" width="48%"></picture>
