@@ -109,15 +109,11 @@ Lately I write native apps for macOS and iPhone: SwiftUI + AppKit, no Electron, 
 </p>
 
 <p align="center">
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=david-build&theme=github_dark">
-  <img src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=david-build&theme=github" alt="Profile details" width="98%">
-</picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/david-build/david-build/output/card-activity-dark.svg"><img src="https://raw.githubusercontent.com/david-build/david-build/output/card-activity.svg" alt="Activity" width="98%"></picture>
 </p>
 
 <p align="center">
-<!-- the three inline images share one line on purpose: any whitespace between them would widen the row and wrap it -->
-<picture><source media="(prefers-color-scheme: dark)" srcset="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=david-build&theme=github_dark"><img src="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=david-build&theme=github" alt="Stats" width="48%"></picture><img src="assets/spacer.png" alt="" width="2%" height="1"><picture><source media="(prefers-color-scheme: dark)" srcset="https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=david-build&theme=github_dark&utcOffset=3"><img src="https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=david-build&theme=github&utcOffset=3" alt="Productive time" width="48%"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/david-build/david-build/output/card-totals-dark.svg"><img src="https://raw.githubusercontent.com/david-build/david-build/output/card-totals.svg" alt="Totals" width="48%"></picture><img src="assets/spacer.png" alt="" width="2%" height="1"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/david-build/david-build/output/card-hours-dark.svg"><img src="https://raw.githubusercontent.com/david-build/david-build/output/card-hours.svg" alt="Commits by hour" width="48%"></picture>
 </p>
 
 <sub>Most of my commits land in private repositories, so the public graph is the tip of the iceberg.</sub>

@@ -1,4 +1,4 @@
-name: Contribution snake
+name: Profile stats
 
 on:
   schedule:
@@ -12,9 +12,11 @@ permissions:
   contents: write
 
 jobs:
-  snake:
+  stats:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+
       - name: Generate the snake
         uses: Platane/snk/svg-only@v3
         with:
@@ -22,6 +24,12 @@ jobs:
           outputs: |
             dist/github-contribution-grid-snake.svg?palette=github-light
             dist/github-contribution-grid-snake-dark.svg?palette=github-dark
+
+      - name: Draw the stats cards
+        # PROFILE_TOKEN (a read-only fine-grained PAT) lets the cards see private repos; the default token sees public ones
+        env:
+          GH_TOKEN: ${{ secrets.PROFILE_TOKEN || secrets.GITHUB_TOKEN }}
+        run: python3 scripts/cards.py ${{ github.repository_owner }} dist
 
       - name: Publish to the output branch
         uses: crazy-max/ghaction-github-pages@v4
