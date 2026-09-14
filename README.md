@@ -97,18 +97,24 @@ Lately I write native apps for macOS and iPhone: SwiftUI + AppKit, no Electron, 
 
 <div align="center">
 
+[![All contributions](https://badges.strrl.dev/contributions/all/david-build?style=flat&labelColor=333333&logoColor=E7E7E7&color=1f6bff)](https://github.com/david-build)
+[![All commits](https://badges.strrl.dev/commits/all/david-build?style=flat&labelColor=333333&logoColor=E7E7E7&color=1f6bff)](https://github.com/david-build)
+[![All PRs](https://badges.strrl.dev/prs/all/david-build?style=flat&labelColor=333333&logoColor=E7E7E7&color=1f6bff)](https://github.com/david-build?tab=repositories)
+
+<a href="https://github.com/david-build"><img src="https://ghchart.rshah.org/1f6bff/david-build" alt="Contribution graph" width="100%"></a>
+
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://github-readme-stats.vercel.app/api?username=david-build&show_icons=true&include_all_commits=true&hide_border=true&theme=github_dark&bg_color=00000000&title_color=1f6bff&icon_color=1f6bff">
-  <img src="https://github-readme-stats.vercel.app/api?username=david-build&show_icons=true&include_all_commits=true&hide_border=true&bg_color=00000000&title_color=1f6bff&icon_color=1f6bff" alt="GitHub stats" height="165">
-</picture>
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://github-readme-stats.vercel.app/api/top-langs/?username=david-build&layout=compact&hide_border=true&theme=github_dark&bg_color=00000000&title_color=1f6bff">
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=david-build&layout=compact&hide_border=true&bg_color=00000000&title_color=1f6bff" alt="Top languages" height="165">
+  <source media="(prefers-color-scheme: dark)" srcset="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=david-build&theme=github_dark">
+  <img src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=david-build&theme=github" alt="Profile details" width="100%">
 </picture>
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://streak-stats.demolab.com/?user=david-build&hide_border=true&theme=github-dark-blue&background=00000000">
-  <img src="https://streak-stats.demolab.com/?user=david-build&hide_border=true&background=00000000&ring=1f6bff&fire=1f6bff&currStreakLabel=1f6bff" alt="Contribution streak" height="165">
+  <source media="(prefers-color-scheme: dark)" srcset="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=david-build&theme=github_dark">
+  <img src="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=david-build&theme=github" alt="Stats" width="49%">
+</picture>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=david-build&theme=github_dark&utcOffset=3">
+  <img src="https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=david-build&theme=github&utcOffset=3" alt="Productive time" width="49%">
 </picture>
 
 <sub>Most of my commits land in private repositories, so the public graph is the tip of the iceberg.</sub>
