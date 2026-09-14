@@ -181,14 +181,31 @@ def open_svg(w, h, label):
 	return '<svg xmlns="http://www.w3.org/2000/svg" width="%d" height="%d" viewBox="0 0 %d %d" role="img" aria-label="%s">%s' % (w, h, w, h, label, font_face())
 
 
+STEP = 12
+
+
+def fade(y, h):
+	"""How much of the halftone survives at a given height: all of it at the top, a trace at the foot."""
+	return 1 - 0.85 * (y / h)
+
+
+def dots(t, w, h):
+	"""The halftone as one path per row: a tiled pattern seams and bands once the image is scaled, plain arcs do not."""
+	out = ""
+	for y in range(STEP // 2, h, STEP):
+		row = "".join("M%d,%dm-1,0a1,1 0 1,0 2,0a1,1 0 1,0 -2,0" % (x, y) for x in range(STEP // 2, w, STEP))
+		out += '<path d="%s" fill="%s" opacity="%.3f"/>' % (row, t["dot"], float(t["dot_op"]) * fade(y, h))
+	return out
+
+
 def eggs(t, w, h, key):
 	"""A few developer artefacts sit on the dot grid instead of dots; the seed keeps them still between daily renders."""
 	rng = random.Random(key)
 	out = ""
 	for _ in range(max(4, (w * h) // 26000)):
-		x = rng.randrange(2, w // 10 - 2) * 10 + 5
-		y = rng.randrange(2, h // 10 - 2) * 10 + 5
-		out += '<text x="%d" y="%d" text-anchor="middle" dominant-baseline="middle" font-family="%s" font-size="10" fill="%s" opacity="%s">%s</text>' % (x, y, FONT, t["dot"], t["egg_op"], rng.choice(EGGS).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
+		x = rng.randrange(2, w // STEP - 2) * STEP + STEP // 2
+		y = rng.randrange(2, h // STEP - 2) * STEP + STEP // 2
+		out += '<text x="%d" y="%d" text-anchor="middle" dominant-baseline="middle" font-family="%s" font-size="10" fill="%s" opacity="%.3f">%s</text>' % (x, y, FONT, t["dot"], float(t["egg_op"]) * fade(y, h), rng.choice(EGGS).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
 	return out
 
 
@@ -196,7 +213,6 @@ def shell(t, w, h, key, glow):
 	"""Card plate: rounded, an even halftone of faint dots with a few easter eggs, a glow of the card's own colour rising from the foot, a gradient edge."""
 	return """<defs>
 	<clipPath id="clip-%(k)s"><rect width="%(w)d" height="%(h)d" rx="18"/></clipPath>
-	<pattern id="dots-%(k)s" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="5" cy="5" r="1" fill="%(dot)s"/></pattern>
 	<radialGradient id="glow-%(k)s" cx=".5" cy="1.2" r=".8"><stop offset="0" stop-color="%(glow)s" stop-opacity="%(glow_op)s"/><stop offset="1" stop-color="%(glow)s" stop-opacity="0"/></radialGradient>
 	<linearGradient id="edge-%(k)s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="%(edge)s" stop-opacity="%(edge_op)s"/><stop offset="1" stop-color="%(glow)s" stop-opacity=".25"/></linearGradient>
 	<linearGradient id="line-%(k)s" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="%(links)s"/><stop offset="1" stop-color="%(purple)s"/></linearGradient>
@@ -208,12 +224,12 @@ def shell(t, w, h, key, glow):
 </defs>
 <g clip-path="url(#clip-%(k)s)">
 	<rect width="%(w)d" height="%(h)d" fill="%(bg)s"/>
-	<rect width="%(w)d" height="%(h)d" fill="url(#dots-%(k)s)" opacity="%(dot_op)s"/>
+	%(dots)s
 	%(eggs)s
 	<rect width="%(w)d" height="%(h)d" fill="url(#glow-%(k)s)"/>
 </g>
 <rect x=".5" y=".5" width="%(w)d" height="%(h)d" rx="18" fill="none" stroke="url(#edge-%(k)s)"/>
-""" % dict(t, **BRAND, k=key, w=w - 1, h=h - 1, glow=glow, eggs=eggs(t, w, h, key))
+""" % dict(t, **BRAND, k=key, w=w - 1, h=h - 1, glow=glow, dots=dots(t, w, h), eggs=eggs(t, w, h, key))
 
 
 def text(x, y, s, size, color, weight=400, anchor="start"):
@@ -221,8 +237,8 @@ def text(x, y, s, size, color, weight=400, anchor="start"):
 
 
 def title(t, x, y, head, sub):
-	# y is the top of the text block: a 19px title cap sits 15px below it, the subtitle 22px under that
-	return text(x, y + 15, head, 19, t["text"], 700) + text(x, y + 37, sub, 12, t["muted"])
+	# y is the top of the text block: a 20px title cap sits 16px below it, the subtitle 22px under that
+	return text(x, y + 16, head, 20, t["text"], 700) + text(x, y + 38, sub, 12, t["muted"])
 
 
 def card_activity(t, key, d):
