@@ -101,22 +101,24 @@ Lately I write native apps for macOS and iPhone: SwiftUI + AppKit, no Electron, 
 [![All commits](https://badges.strrl.dev/commits/all/david-build?style=flat&labelColor=333333&logoColor=E7E7E7&color=1f6bff)](https://github.com/david-build)
 [![All PRs](https://badges.strrl.dev/prs/all/david-build?style=flat&labelColor=333333&logoColor=E7E7E7&color=1f6bff)](https://github.com/david-build?tab=repositories)
 
+<p align="center">
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/david-build/david-build/output/github-contribution-grid-snake-dark.svg">
   <img src="https://raw.githubusercontent.com/david-build/david-build/output/github-contribution-grid-snake.svg" alt="Contribution snake" width="98%">
 </picture>
+</p>
 
-<br>
-
+<p align="center">
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=david-build&theme=github_dark">
   <img src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=david-build&theme=github" alt="Profile details" width="98%">
 </picture>
+</p>
 
-<br>
-
+<p align="center">
 <!-- the three inline images share one line on purpose: any whitespace between them would widen the row and wrap it -->
 <picture><source media="(prefers-color-scheme: dark)" srcset="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=david-build&theme=github_dark"><img src="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=david-build&theme=github" alt="Stats" width="48%"></picture><img src="assets/spacer.png" alt="" width="2%" height="1"><picture><source media="(prefers-color-scheme: dark)" srcset="https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=david-build&theme=github_dark&utcOffset=3"><img src="https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=david-build&theme=github&utcOffset=3" alt="Productive time" width="48%"></picture>
+</p>
 
 <sub>Most of my commits land in private repositories, so the public graph is the tip of the iceberg.</sub>
 
