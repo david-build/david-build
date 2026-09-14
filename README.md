@@ -1,150 +1,166 @@
-## About Me
+<div align="center">
 
-I'm a full-stack engineer, system architect, and technical lead with over 20 years of hands-on experience in web technologies.
+# David Build
 
-I started coding professionally in 2004, long before modern frameworks existed. From Adobe Flash & ActionScript to modern high-performance web systems, I’ve built products across multiple technology generations – adapting, evolving, and staying ahead of the curve.
+**Full-stack engineer · system architect · founder of [Perfecto Web](https://perfecto-web.com)**
 
-My core strength lies in backend architecture and scalable web systems, but I operate confidently across the entire development lifecycle – from UX design and product thinking to DevOps decisions and production deployment.
+Building for the web since 2004. Lately also native apps for macOS and iPhone, and a bit of hardware.
 
-I don’t just write code – I design systems that work.
+[![Website](https://img.shields.io/badge/perfecto--web.com-1f6bff?style=flat&logo=safari&logoColor=white)](https://perfecto-web.com)
+[![Telegram](https://img.shields.io/badge/Telegram-@PerfectoWeb-1f6bff?style=flat&logo=telegram&logoColor=white)](https://t.me/PerfectoWeb)
+[![X](https://img.shields.io/badge/X-@PerfectoWeb-111?style=flat&logo=x&logoColor=white)](https://x.com/PerfectoWeb)
+[![Organisation](https://img.shields.io/badge/GitHub-@PerfectoWeb-111?style=flat&logo=github&logoColor=white)](https://github.com/PerfectoWeb)
+[![Homebrew](https://img.shields.io/badge/homebrew-perfectoweb%2Ftap-1f6bff?style=flat&logo=homebrew&logoColor=white)](https://github.com/PerfectoWeb/homebrew-tap)
 
----
+[![Years on GitHub](https://badges.strrl.dev/years/david-build?style=flat&labelColor=333333&logoColor=E7E7E7)](https://github.com/david-build)
+[![Contributions this year](https://badges.strrl.dev/contributions/yearly/david-build?style=flat&labelColor=333333&logoColor=E7E7E7&color=1f6bff)](https://github.com/david-build)
+[![Commits this month](https://badges.strrl.dev/commits/monthly/david-build?style=flat&labelColor=333333&logoColor=E7E7E7&color=1f6bff)](https://github.com/david-build)
+[![Followers](https://img.shields.io/github/followers/david-build?style=flat&labelColor=333333&logoColor=E7E7E7&label=Followers&logo=github)](https://github.com/david-build?tab=followers)
 
-## What I Do
-
-* Architect and build scalable web applications
-* Design and implement high-performance RESTful APIs
-* Lead technical teams and define engineering standards
-* Develop Telegram bots & Telegram Mini Apps (TMA)
-* Integrate blockchain and crypto infrastructure
-* Build full product cycles from idea to production
-
----
-
-# 💻 Technical Stack
-
-## Core Engineering
-
-| Area     | Technology         | Level | Notes                              |
-| -------- | ------------------ | ----- | ---------------------------------- |
-| Backend  | PHP 8+             | ⭐⭐⭐⭐⭐ | 20+ years production experience    |
-| Backend  | Node.js            | ⭐⭐⭐⭐⭐ | High-load systems & APIs           |
-| Backend  | ExpressJS          | ⭐⭐⭐⭐  | RESTful services & architecture    |
-| API      | RESTful API Design | ⭐⭐⭐⭐⭐ | Scalable, secure, production-grade |
-| Language | JavaScript         | ⭐⭐⭐⭐⭐ | Deep ecosystem knowledge           |
-| Language | TypeScript         | ⭐⭐⭐⭐  | Strong typing & architecture       |
-| Frontend | HTML5 / CSS3       | ⭐⭐⭐⭐⭐ | Performance-focused UI             |
+</div>
 
 ---
 
-## Systems & Embedded
+## About
 
-| Area     | Technology      | Level | Notes                          |
-| -------- | --------------- | ----- | ------------------------------ |
-| Embedded | Arduino (C/C++) | ⭐⭐⭐⭐  | Hardware-level interaction     |
-| Language | Python          | ⭐⭐    | Expanding into automation / AI |
+I started coding professionally in 2004, before modern frameworks existed: Adobe Flash and ActionScript, then PHP and the early web stack, and every generation since. Twenty years of shipping production systems taught me one thing above all: **own your stack**. Fewer dependencies, fewer surprises, and code you can still read ten years later.
 
----
-
-## Architecture & Product
-
-| Area          | Skill                          | Expertise                    |
-| ------------- | ------------------------------ | ---------------------------- |
-| System Design | Backend architecture           | Scalable & high-load systems |
-| Product       | Full-cycle development         | From idea to deployment      |
-| Security      | API & crypto integrations      | Production-ready             |
-| DevOps        | Deployment & server management | Production infrastructure    |
+My core is backend architecture and scalable web systems, but I cover the whole cycle: product thinking, UX, frontend, DevOps and production deployment. Most of what I build is closed-source client work; the tools I made for myself are open and live at [@PerfectoWeb](https://github.com/PerfectoWeb).
 
 ---
 
-## Design & UX
+## What I build
 
-Beyond engineering, I actively design digital products:
+### 🧱 Perfecto CMS
 
-| Area       | Tool / Skill                   | Level |
-| ---------- | ------------------------------ | ----- |
-| UI/UX      | Product usability design       | ⭐⭐⭐⭐⭐ |
-| Design     | Figma                          | ⭐⭐⭐⭐  |
-| Web Design | Design systems                 | ⭐⭐⭐⭐⭐ |
-| Mobile     | Mobile interface design        | ⭐⭐⭐⭐  |
-| Telegram   | Telegram Mini App (TMA) design | ⭐⭐⭐⭐⭐ |
+A proprietary content management system I have been developing and evolving since 2009. It powers the sites and platforms Perfecto Web ships to clients.
 
-I believe engineering without design awareness is incomplete.
+- PHP 8.3, MySQL/MariaDB, **zero third-party dependencies**: no framework, no Composer, own template engine
+- Own frontend and admin component set in plain JavaScript, no jQuery, no build step
+- Multilingual out of the box, SEO-first routing, one-click theming
+- Security by default: CSRF everywhere, TOTP two-factor auth, pluggable anti-bot layer, hardened uploads, tamper-evident activity log, redacted structured logging
+- Own cache layer (files / APCu / Redis), mail queue with retry and backoff, cron dispatcher, soft-delete trash, image pipeline with automatic WebP
+- Dark-theme admin panel with a modern rich-text editor, analytics, ticket desk and newsletter engine built in
+
+### 🍎 Native apps (Swift)
+
+Lately I write native apps for macOS and iPhone: SwiftUI + AppKit, no Electron, no telemetry.
+
+| | |
+| --- | --- |
+| [**Belay**](https://github.com/PerfectoWeb/Belay) | Keeps your Mac awake while AI coding agents work, then lets it sleep. [Mac App Store](https://apps.apple.com/app/belay-awake-for-ai-agents/id6801207644) · [Homebrew](https://github.com/PerfectoWeb/homebrew-tap) · [site](https://perfectoweb.github.io/Belay/) |
+| [**Gibson**](https://github.com/PerfectoWeb/Gibson) | A macOS screen saver: the hacker-film dashboard, driven by real system telemetry |
+| **f64** | A pure RAW camera for iPhone with manual dials and zero AI. In development |
+
+### 🔧 Hardware & embedded
+
+- [**PocketLab**](https://github.com/PerfectoWeb/flipper-pocketlab): a native Flipper Zero app that teaches the device through interactive lessons. In the [Flipper Apps Catalog](https://lab.flipper.net/apps/pocketlab)
+- [**IBM VFD Display**](https://github.com/PerfectoWeb/IBM-VFD-Display-ESP32-S3): ESP32-S3 driving a Futaba/IBM 20x2 vacuum fluorescent display
+- Nova editor extensions: [Perfect Dark](https://github.com/PerfectoWeb/nova-perfectdark-theme), [Favicon Clip](https://github.com/PerfectoWeb/nova-favicon-clip), [Lorem Clip](https://github.com/PerfectoWeb/nova-lorem-clip)
 
 ---
 
-## Professional Experience
+## Stack
+
+<div align="center">
+
+![PHP](https://img.shields.io/badge/PHP_8.3-777BB4?style=flat&logo=php&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL_/_MariaDB-4479A1?style=flat&logo=mysql&logoColor=white)
+![Redis](https://img.shields.io/badge/Redis-DC382D?style=flat&logo=redis&logoColor=white)
+![Nginx](https://img.shields.io/badge/Nginx-009639?style=flat&logo=nginx&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=111)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat&logo=nodedotjs&logoColor=white)
+![Swift](https://img.shields.io/badge/Swift-F05138?style=flat&logo=swift&logoColor=white)
+![SwiftUI](https://img.shields.io/badge/SwiftUI_/_AppKit-0D84FF?style=flat&logo=apple&logoColor=white)
+![C](https://img.shields.io/badge/C_/_ESP32-A8B9CC?style=flat&logo=c&logoColor=111)
+![Python](https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white)
+![Figma](https://img.shields.io/badge/Figma-F24E1E?style=flat&logo=figma&logoColor=white)
+![Telegram Bots](https://img.shields.io/badge/Telegram_Bots_&_Mini_Apps-26A5E4?style=flat&logo=telegram&logoColor=white)
+![Claude Code](https://img.shields.io/badge/Agentic_workflows-Claude_Code-D97757?style=flat&logo=anthropic&logoColor=white)
+
+</div>
+
+| Area | What I do with it |
+| --- | --- |
+| **Backend** | PHP 8+ (20 years in production), Node.js, RESTful API design, high-load and security-focused systems |
+| **Data & infra** | MySQL/MariaDB schema design, Redis/APCu caching, Nginx/Apache, Linux servers, deployment and monitoring |
+| **Frontend** | Semantic HTML/CSS, design tokens, plain JavaScript components, performance and accessibility first |
+| **Native** | Swift, SwiftUI, AppKit, AVFoundation; notarized and App Store releases, Homebrew distribution |
+| **Embedded** | ESP32 / Arduino (C/C++), Flipper Zero apps |
+| **Product & design** | UI/UX, design systems, Figma, Telegram Mini Apps |
+| **Workflow** | Agentic engineering with Claude Code and Codex, CI on GitHub Actions, structured docs for every project |
+
+---
+
+## GitHub stats
+
+<div align="center">
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://github-readme-stats.vercel.app/api?username=david-build&show_icons=true&include_all_commits=true&hide_border=true&theme=github_dark&bg_color=00000000&title_color=1f6bff&icon_color=1f6bff">
+  <img src="https://github-readme-stats.vercel.app/api?username=david-build&show_icons=true&include_all_commits=true&hide_border=true&bg_color=00000000&title_color=1f6bff&icon_color=1f6bff" alt="GitHub stats" height="165">
+</picture>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://github-readme-stats.vercel.app/api/top-langs/?username=david-build&layout=compact&hide_border=true&theme=github_dark&bg_color=00000000&title_color=1f6bff">
+  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=david-build&layout=compact&hide_border=true&bg_color=00000000&title_color=1f6bff" alt="Top languages" height="165">
+</picture>
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://streak-stats.demolab.com/?user=david-build&hide_border=true&theme=github-dark-blue&background=00000000">
+  <img src="https://streak-stats.demolab.com/?user=david-build&hide_border=true&background=00000000&ring=1f6bff&fire=1f6bff&currStreakLabel=1f6bff" alt="Contribution streak" height="165">
+</picture>
+
+<sub>Most of my commits land in private repositories, so the public graph is the tip of the iceberg.</sub>
+
+</div>
+
+---
+
+## Experience
 
 ### 🧠 Perfecto Web ® LLC (2008 – Present)
 
 Founder & Lead Engineer
 
-* Full-cycle development: architecture, backend, frontend, UX, deployment
-* Websites, SaaS platforms, bots, mobile apps
-* Long-term client partnerships
-* Built scalable, performance-focused systems
+- Full-cycle development: architecture, backend, frontend, UX, deployment
+- Websites, SaaS platforms, bots, native apps; long-term client partnerships
+- Author and maintainer of Perfecto CMS
 
----
-
-### 🚀 Cryptocurrency Exchange (2018 – Present)
+### 💳 Fintech Platform (2018 – 2026)
 
 Technical Lead / CTO
 
-* Architecture of exchange infrastructure
-* High-load backend systems
-* Security-focused API integrations
-* Team leadership & engineering strategy
+- Architecture of a high-load payment and settlement platform
+- Security-focused API integrations with banks and payment providers
+- Team leadership and engineering strategy
 
----
-
-### 🔗 Tonkeeper Partner (2023 – Present)
+### 🔗 Tonkeeper Partner (2023 – 2026)
 
 Technical Integration Partner
 
-* Integrated native TON buy/sell plugin
-* Blockchain interaction & secure wallet integration
-* Close collaboration with ecosystem teams
-
----
+- Native in-app purchase flow integrated into the wallet
+- Close collaboration with the ecosystem teams
 
 ### 💾 Xcite Computer Solution, New York (2004 – 2008)
 
 Full-Stack Developer & UI/UX Designer
 
-* Adobe Flash & ActionScript development
-* Early web application systems
-* UI/UX design before “UX” became mainstream
+- Adobe Flash & ActionScript development, early web application systems
+- UI/UX design before "UX" became mainstream
 
 ---
 
 ## Achievements
 
-🏆 Two-time 1st Place Winner – Yandex Alice Skill Development Competition (2019)
+🏆 Two-time 1st place winner of the Yandex Alice skill development competition (2019): [Guess the Dinosaur](https://perfecto-web.com/ru/portfolio/apps/415-alice-skill-dinosaurus.html) and [Colors Mixer](https://perfecto-web.com/ru/portfolio/apps/410-colors-mixer.html)
 
-* “Guess the Dinosaur”
-* “Colors Mixer”
-
-(Both skills were later removed from the Yandex catalog due to maintenance discontinuation.)
-
-Project descriptions:
-
-* [https://perfecto-web.com/ru/portfolio/apps/415-alice-skill-dinosaurus.html](https://perfecto-web.com/ru/portfolio/apps/415-alice-skill-dinosaurus.html)
-* [https://perfecto-web.com/ru/portfolio/apps/410-colors-mixer.html](https://perfecto-web.com/ru/portfolio/apps/410-colors-mixer.html)
+⭐ Flawless freelance reputation across [Weblancer](https://www.weblancer.net/users/PerfectoWeb/), [Freelance.ru](https://freelance.ru/reviews/PerfectoWeb/) and [FL.ru](https://www.fl.ru/users/perfectoweb/portfolio/), 2008 – 2022
 
 ---
 
-## Freelance Reputation (2008–2022)
+<div align="center">
 
-Maintained a flawless reputation across multiple freelance platforms:
+I thrive in complex systems. I take responsibility. I build for performance, scalability and longevity.
 
-* [https://www.weblancer.net/users/PerfectoWeb/](https://www.weblancer.net/users/PerfectoWeb/)
-* [https://freelance.ru/reviews/PerfectoWeb/](https://freelance.ru/reviews/PerfectoWeb/)
-* [https://www.fl.ru/users/perfectoweb/portfolio/](https://www.fl.ru/users/perfectoweb/portfolio/)
-
----
-
-## Philosophy
-
-I thrive in complex systems.
-I take responsibility.
-I build for performance, scalability, and longevity.
+</div>
